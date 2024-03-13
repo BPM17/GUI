@@ -1,2 +1,2 @@
-# GUI
-This project is a GUI linked to an API
+# Movie-API
+This is an API creation project
