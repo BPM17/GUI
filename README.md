@@ -1,4 +1,4 @@
-# GUI
-This project is a GUI linked to an API
+# GUI API Consumer
 
-This project will be able to consume data from the API, and process all information and display it as desire.
+- This API is intended to consume data from pubic APIs by the momment, and consume data from my own API.
+- The idea is to have 
