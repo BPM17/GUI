@@ -1,4 +1,2 @@
 # GUI API Consumer
-
-- This API is intended to consume data from pubic APIs by the momment, and consume data from my own API.
-- The idea is to have 
+- This API will be connect to my vehicle API in order to consume data from it creating the request in an easier way. It will be capable to trigger all supported endpoints, will display required fields and it will be capable to bring and display data in an easier way.
