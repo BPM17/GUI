@@ -1,22 +1,7 @@
 import ttkbootstrap as ttk
 import tkinter as tk
 import sqlite3
-
-class Handler():
-    def __init__(self, dbName):
-        self.dbName = dbName
-        self.conn = sqlite3.connect(f'{self.dbName}')
-        self.cursor = self.conn.cursor()
-    
-    def GetTable(self, tableName):
-        self.cursor.execute(f'''SELECT * FROM {tableName}''')
-        data = self.cursor.fetchall()
-        return data
-    
-    def GetColumn(self, tableName, column):
-        self.cursor.execute(f'''SELECT {column} FROM {tableName}''')
-        data = self.cursor.fetchall()
-        return data
+from SQLiteHandler import Handler
 
 class Main(ttk.Window):
     def __init__(self, title, dimensions):
@@ -59,7 +44,6 @@ class APIconsumer():
 
     def EditItemList(self,l):
             self.notebookNames.extend(str(item).translate(str.maketrans("", "", "'(),")) for item in l)
-
 
 
 APIconsumer("Baruch", "800x500")
