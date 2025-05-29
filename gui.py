@@ -21,7 +21,11 @@ class APIconsumer():
         self.mainFrame = self.CreateMainFrame(self.main, "750x450")
         self.CreateContentWindow()
         self.notebook.bind("<<NotebookTabChanged>>", self.OnTabChanged)
+        self.DisplayOnTab()
         self.main.mainloop()
+
+    def DisplayOnTab(self):
+        pass
 
     def CreateMainFrame(self, parent, dimensions):
         dimensions  = dimensions.split('x')
@@ -42,7 +46,8 @@ class APIconsumer():
     def OnTabChanged(self, event):
         n = event.widget
         index = self.notebook.index("current")
-        self.currentTab = self.notebook.tab(index,"text")
+        self.currentTab = (self.notebook.tab(index,"text")).replace(" ", "").lower()
+        
         print(self.currentTab)
 
     def GetNotebookPages(self):
