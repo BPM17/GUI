@@ -25,6 +25,16 @@ class Handler():
         self.cursor.execute(f'''SELECT {column} FROM {tableName}''')
         data = self.cursor.fetchall()
         return data
+    
+    def Pragma(self):
+        self.cursor.execute(f'''PRAGMA automatic_index''')
+        data = self.cursor.fetchall()
+        for i in data:
+            print(i)
+
+    def GetRegister(self, tableName, identifier):
+        self.cursor.execute(f'''SELECT * FROM {tableName} WHERE endpoint = '{identifier}';''')
+        return self.cursor.fetchall()
 
 if __name__ == "__main__":
     dbName = "C:\GUI\GUI\guiDb.db"

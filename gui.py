@@ -20,6 +20,7 @@ class APIconsumer():
         self.notebookNames = []
         self.mainFrame = self.CreateMainFrame(self.main, "750x450")
         self.CreateContentWindow()
+        self.notebook.bind("<<NotebookTabChanged>>", self.OnTabChanged)
         self.main.mainloop()
 
     def CreateMainFrame(self, parent, dimensions):
@@ -37,13 +38,26 @@ class APIconsumer():
             self.notebookFrames.append(ttk.Frame(self.notebook))
             self.notebook.add(self.notebookFrames[i], text=self.notebookNames[i])
         self.notebook.pack()
+    
+    def OnTabChanged(self, event):
+        n = event.widget
+        index = self.notebook.index("current")
+        self.currentTab = self.notebook.tab(index,"text")
+        print(self.currentTab)
 
     def GetNotebookPages(self):
         l = self.handler.GetColumn("ENDPOINTS", "endpointName")
         self.EditItemList(l)
 
     def EditItemList(self,l):
-            self.notebookNames.extend(str(item).translate(str.maketrans("", "", "'(),")) for item in l)
+        self.notebookNames.extend(str(item).translate(str.maketrans("", "", "'(),")) for item in l)
 
+    def GetEndpointsFields(self):
+        h = Handler("C:\GUI\GUI\guiDb.db")
+        l = h.GetRegister("EndpointsFields", "putcar")
+
+    def GetCurrentTab(self):
+        index = self.notebook.index('current')
+        print(index)
 
 APIconsumer("Baruch", "800x500")
