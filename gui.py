@@ -22,7 +22,7 @@ class APIconsumer():
         self.fields=''
         self.labels = []
         self.entries = []
-        self.currentitab = 0
+        self.buttons = []
         self.mainFrame = self.CreateMainFrame(self.main, "750x450")
         self.CreateContentWindow()
         self.notebook.bind("<<NotebookTabChanged>>", self.OnTabChanged)
@@ -31,6 +31,15 @@ class APIconsumer():
     def DisplayOnTab(self):
         self.fields = self.GetEndpointsFields()
         self.PackFields()
+        self.PackButtons()
+
+    def PackButtons(self):
+        for i in range(self.notebook.index("end")):
+            if self.notebook.tab(i, "text") == self.currentTab:
+                self.buttons.append(ttk.Button(self.main, text="Clear"))
+                self.buttons[0].pack()
+                self.buttons.append(ttk.Button(self.main, text="Execute"))
+                self.buttons[1].pack()
 
     def PackFields(self):
         self.DestroyAll()
@@ -43,6 +52,9 @@ class APIconsumer():
                         self.labels[j].pack(pady = 10, padx = 10)
                         self.entries.append(ttk.Entry(self.notebookFrames[i]))
                         self.entries[j].pack()
+                    else:
+                        self.labels.append( ttk.Label(self.notebookFrames[i],text=f""))
+                        self.labels[j].pack(pady = 10, padx = 10)
 
     def DestroyAll(self):
         for i in self.labels:
