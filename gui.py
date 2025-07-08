@@ -31,15 +31,17 @@ class APIconsumer():
     def DisplayOnTab(self):
         self.fields = self.GetEndpointsFields()
         self.PackFields()
-        self.PackButtons()
+        self.GridkButtons()
 
-    def PackButtons(self):
-        for i in range(self.notebook.index("end")):
-            if self.notebook.tab(i, "text") == self.currentTab:
-                self.buttons.append(ttk.Button(self.main, text="Clear"))
-                self.buttons[0].pack()
-                self.buttons.append(ttk.Button(self.main, text="Execute"))
-                self.buttons[1].pack()
+    def GridkButtons(self):
+        self.buttonsFrame = ttk.Frame(self.main)
+        self.buttonsFrame.pack()
+        self.buttonsFrame.rowconfigure(1, weight=1)
+        self.buttonsFrame.columnconfigure(4, weight=1)
+        self.buttons.append(ttk.Button(self.buttonsFrame, text="Clear"))
+        self.buttons[0].grid(column = 2, row = 1, sticky = tk.EW, padx = 5, pady = 5)
+        self.buttons.append(ttk.Button(self.buttonsFrame, text="Execute"))
+        self.buttons[1].grid(column = 3, row = 1, sticky = tk.EW, padx = 5, pady = 5)
 
     def PackFields(self):
         self.DestroyAll()
