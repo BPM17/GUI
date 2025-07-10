@@ -2,6 +2,7 @@ import ttkbootstrap as ttk
 import tkinter as tk
 import sqlite3
 from SQLiteHandler import Handler
+from requester import Requester
 
 class Main(ttk.Window):
     def __init__(self, title, dimensions):
@@ -23,6 +24,7 @@ class APIconsumer():
         self.labels = []
         self.entries = []
         self.buttons = []
+        self.requester = Requester
         self.mainFrame = self.CreateMainFrame(self.main, "750x450")
         self.CreateContentWindow()
         self.notebook.bind("<<NotebookTabChanged>>", self.OnTabChanged)
@@ -35,7 +37,7 @@ class APIconsumer():
 
     def GridkButtons(self):
         self.buttonsFrame = ttk.Frame(self.main)
-        self.buttonsFrame.pack()
+        self.buttonsFrame.pack(pady=5)
         self.buttonsFrame.rowconfigure(1, weight=1)
         self.buttonsFrame.columnconfigure(4, weight=1)
         self.buttons.append(ttk.Button(self.buttonsFrame, text="Clear"))
@@ -57,6 +59,23 @@ class APIconsumer():
                     else:
                         self.labels.append( ttk.Label(self.notebookFrames[i],text=f""))
                         self.labels[j].pack(pady = 10, padx = 10)
+
+# TODO: work distributing the fields in two columns
+    def GridFields(self):
+        self.DestroyAll()
+        self.fields = list(self.fields)
+        for i in range(self.notebook.index("end")):
+            if self.notebook.tab(i, "text") == self.currentTab:
+                if len(self.fields) % 2 == 0: #this means the len is multiple of two 
+                    for j in range(len(self.fields)):
+                        if len(self.fields) != 0 and len(self.fields[0])>0:
+                            self.labels.append( ttk.Label(self.notebookFrames[i],text=f"{self.fields[j]}"))
+                            self.labels[j].pack(pady = 10, padx = 10)
+                            self.entries.append(ttk.Entry(self.notebookFrames[i]))
+                            self.entries[j].pack()
+                        else:
+                            self.labels.append( ttk.Label(self.notebookFrames[i],text=f""))
+                            self.labels[j].pack(pady = 10, padx = 10)
 
     def DestroyAll(self):
         for i in self.labels:
