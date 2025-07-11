@@ -3,6 +3,7 @@ import tkinter as tk
 import sqlite3
 from SQLiteHandler import Handler
 from requester import Requester
+import json
 
 class Main(ttk.Window):
     def __init__(self, title, dimensions):
@@ -21,6 +22,7 @@ class APIconsumer():
         self.notebookNames = []
         self.currentTab = ''
         self.fields=''
+        self.endpoints = []
         self.labels = []
         self.entries = []
         self.buttons = []
@@ -35,6 +37,20 @@ class APIconsumer():
         self.PackFields()
         self.GridkButtons()
 
+    def CheckEmptyFields(self):
+        pass
+
+    def Execute(self):
+        self.CheckEmptyFields()
+        payload = {}
+        if len(self.fields) == 1:
+            payload = str(self.entries[0].get())
+        else:
+            for i in range(len(self.fields)):
+                payload [self.fields[i]] = self.entries[i].get()
+                payload = json.dumps(payload)
+        self.requester.Get("GET", f"getcar/{payload}", "", payload)
+
     def GridkButtons(self):
         self.buttonsFrame = ttk.Frame(self.main)
         self.buttonsFrame.pack(pady=5)
@@ -42,7 +58,7 @@ class APIconsumer():
         self.buttonsFrame.columnconfigure(4, weight=1)
         self.buttons.append(ttk.Button(self.buttonsFrame, text="Clear"))
         self.buttons[0].grid(column = 2, row = 1, sticky = tk.EW, padx = 5, pady = 5)
-        self.buttons.append(ttk.Button(self.buttonsFrame, text="Execute"))
+        self.buttons.append(ttk.Button(self.buttonsFrame, text="Execute", command= self.Execute))
         self.buttons[1].grid(column = 3, row = 1, sticky = tk.EW, padx = 5, pady = 5)
 
     def PackFields(self):
@@ -108,8 +124,8 @@ class APIconsumer():
         self.DisplayOnTab()
 
     def GetNotebookPages(self):
-        l = self.handler.GetColumn("ENDPOINTS", "endpointName")
-        self.EditItemList(l)
+        self.endpoints = self.handler.GetColumn("ENDPOINTS", "endpointName")
+        self.EditItemList(self.endpoints)
 
     def EditItemList(self,l):
         self.notebookNames.extend(str(item).translate(str.maketrans("", "", "'(),")) for item in l)
