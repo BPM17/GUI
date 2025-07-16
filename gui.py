@@ -41,15 +41,20 @@ class APIconsumer():
         pass
 
     def Execute(self):
-        self.CheckEmptyFields()
-        payload = {}
-        if len(self.fields) == 1:
-            payload = str(self.entries[0].get())
+        payload ={}
+        headers = {
+            'Content-Type': 'application/json'
+            }
+        if len(self.fields) == 1 and len(self.entries) == 0:
+            self.requester.Get("GET", f"{self.currentTab}/", "", payload)
+        elif len(self.fields) == 1 and len(self.entries) == 1:
+            self.requester.Get("GET", f"{self.currentTab}/{self.entries[0].get()}", "", payload)
         else:
             for i in range(len(self.fields)):
-                payload [self.fields[i]] = self.entries[i].get()
-                payload = json.dumps(payload)
-        self.requester.Get("GET", f"getcar/{payload}", "", payload)
+                payload [f"{self.fields[i]}"] = f"{self.entries[i].get()}"
+            payload = json.dumps(payload)
+
+            self.requester.Put("PUT", f"{self.currentTab}", headers, payload)
 
     def GridkButtons(self):
         self.buttonsFrame = ttk.Frame(self.main)
