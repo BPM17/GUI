@@ -46,15 +46,20 @@ class APIconsumer():
             'Content-Type': 'application/json'
             }
         if len(self.fields) == 1 and len(self.entries) == 0:
-            self.requester.Get("GET", f"{self.currentTab}/", "", payload)
+            response = self.requester.Get("GET", f"{self.currentTab}/", "", payload)
+            response = json.loads(response)
+            self.labels[0].config(text = response)
         elif len(self.fields) == 1 and len(self.entries) == 1:
-            self.requester.Get("GET", f"{self.currentTab}/{self.entries[0].get()}", "", payload)
+            response = self.requester.Get("GET", f"{self.currentTab}/{self.entries[0].get()}", "", payload)
+            response = json.loads(response)
+            self.labels[1].config(text = response)
         else:
             for i in range(len(self.fields)):
                 payload [f"{self.fields[i]}"] = f"{self.entries[i].get()}"
             payload = json.dumps(payload)
-
-            self.requester.Put("PUT", f"{self.currentTab}", headers, payload)
+            response = self.requester.Put("PUT", f"{self.currentTab}", headers, payload)
+            response = json.loads(response)
+            self.labels[1].config(text = response)
 
     def GridkButtons(self):
         self.buttonsFrame = ttk.Frame(self.main)
@@ -80,6 +85,9 @@ class APIconsumer():
                     else:
                         self.labels.append( ttk.Label(self.notebookFrames[i],text=f""))
                         self.labels[j].pack(pady = 10, padx = 10)
+                if len(self.fields) != 0 and len(self.fields[0])>0:
+                    self.labels.append( ttk.Label(self.notebookFrames[i]))
+                    self.labels[j+1].pack(pady = 10, padx = 10)
 
 # TODO: work distributing the fields in two columns
     def GridFields(self):
