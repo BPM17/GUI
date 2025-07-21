@@ -1,2 +1,13 @@
-# GUI API Consumer
-- This API will be connect to my vehicle API in order to consume data from it creating the request in an easier way. It will be capable to trigger all supported endpoints, will display required fields and it will be capable to bring and display data in an easier way.
+The GUI is developed using TTKBootstap, it connects with API CARS it gets the number o fields and entries required for each endpoint to display them in te window, it currently works with 6 endpoints.
+- getcar
+  - To consume the data o this it's required an ID.
+- getcars
+  - To consume it doesn't require any field.
+- getuser
+  - To consume it it's requires an ID.
+- getusers
+  - To consume it doesn't require any field.
+- putcar
+  - This endpoint registers a new car and it requires 4 fields
+- putuser
+  - This endpoint registers a new user and it requires 5 fields
