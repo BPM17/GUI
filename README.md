@@ -1,5 +1,5 @@
 The GUI is developed using TTKBootstap, it connects with API CARS it gets the number o fields and entries required for each endpoint to display them in te window, it currently works with 6 endpoints.
-![Layout]{/img/layout.png}
+![Layout](/img/layout.png)
 - getcar
   - To consume the data o this it's required an ID.
   ![Getcar](/img/getcar.png)
