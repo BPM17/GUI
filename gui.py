@@ -4,6 +4,7 @@ import sqlite3
 from SQLiteHandler import Handler
 from requester import Requester
 import json
+from pprint import pprint
 
 class Main(ttk.Window):
     def __init__(self, title, dimensions):
@@ -48,10 +49,12 @@ class APIconsumer():
         if len(self.fields) == 1 and len(self.entries) == 0:
             response = self.requester.Get("GET", f"{self.currentTab}/", "", payload)
             response = json.loads(response)
+            response = self.Prettyfy(response)
             self.labels[0].config(text = response)
         elif len(self.fields) == 1 and len(self.entries) == 1:
             response = self.requester.Get("GET", f"{self.currentTab}/{self.entries[0].get()}", "", payload)
             response = json.loads(response)
+            response = self.Prettyfy(response)
             self.labels[1].config(text = response)
         else:
             for i in range(len(self.fields)):
@@ -59,7 +62,21 @@ class APIconsumer():
             payload = json.dumps(payload)
             response = self.requester.Put("PUT", f"{self.currentTab}", headers, payload)
             response = json.loads(response)
+            response = self.Prettyfy(response)
             self.labels[1].config(text = response)
+
+    def Prettyfy(self, response):
+        word = ""
+        if type(response) == list:
+            for i in response:
+                for j in i:
+                    word = word + str(j) + "\n"
+                word = word + "\n"
+        elif type(response) == dict:
+            for j in response:
+                response = str(response) + "\n"
+        # print(word)
+        return word
 
     def GridkButtons(self):
         self.buttonsFrame = ttk.Frame(self.main)
@@ -83,10 +100,10 @@ class APIconsumer():
                         self.entries.append(ttk.Entry(self.notebookFrames[i]))
                         self.entries[j].pack()
                     else:
-                        self.labels.append( ttk.Label(self.notebookFrames[i],text=f""))
+                        self.labels.append( ttk.Label(self.notebookFrames[i],text=f"", font=('Courier', 12), justify='left'))
                         self.labels[j].pack(pady = 10, padx = 10)
                 if len(self.fields) != 0 and len(self.fields[0])>0:
-                    self.labels.append( ttk.Label(self.notebookFrames[i]))
+                    self.labels.append( ttk.Label(self.notebookFrames[i], anchor=tk.CENTER, width=100))
                     self.labels[j+1].pack(pady = 10, padx = 10)
 
 # TODO: work distributing the fields in two columns
@@ -96,15 +113,24 @@ class APIconsumer():
         for i in range(self.notebook.index("end")):
             if self.notebook.tab(i, "text") == self.currentTab:
                 if len(self.fields) % 2 == 0: #this means the len is multiple of two 
-                    for j in range(len(self.fields)):
-                        if len(self.fields) != 0 and len(self.fields[0])>0:
+                    if len(self.fields) != 0 and len(self.fields[0])>0:
+                            for j in range(len(self.fields)/2):
+                                self.labels.append( ttk.Label(self.notebookFrames[i],text=f"{self.fields[j]}"))
+                                self.labels[j].grid(column = 0, row = j, sticky = tk.EW, padx = 5, pady = 5)
+                                self.entries.append(ttk.Entry(self.notebookFrames[i]))
+                                self.entries[j].grid(column = 0, row = j, sticky = tk.EW, padx = 5, pady = 5)
+                    else:
+                        self.labels.append( ttk.Label(self.notebookFrames[i],text=f""))
+                        self.labels[j].pack(pady = 10, padx = 10)
+                else:
+                    if len(self.fields) != 0 and len(self.fields[0])>0:
+                        for j in range((len(self.fields)+1)/2):
                             self.labels.append( ttk.Label(self.notebookFrames[i],text=f"{self.fields[j]}"))
-                            self.labels[j].pack(pady = 10, padx = 10)
+                            self.labels[j].grid(column = 0, row = j, sticky = tk.EW, padx = 5, pady = 5)
                             self.entries.append(ttk.Entry(self.notebookFrames[i]))
-                            self.entries[j].pack()
-                        else:
-                            self.labels.append( ttk.Label(self.notebookFrames[i],text=f""))
-                            self.labels[j].pack(pady = 10, padx = 10)
+                            self.entries[j].grid(column = 0, row = j, sticky = tk.EW, padx = 5, pady = 5)
+
+
 
     def DestroyAll(self):
         for i in self.labels:
