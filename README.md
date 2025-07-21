@@ -7,7 +7,7 @@ The GUI is developed using TTKBootstap, it connects with API CARS it gets the nu
 
 - getcar
   - To consume the data o this it's required an ID.
-  ![Getcar](/img/getar.png)
+  ![Getcar](/img/getcar.png)
 - getcars
   - To consume it doesn't require any field.
   ![Getcars](/img/getars.png)
